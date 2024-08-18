@@ -64,7 +64,7 @@ Q_OBJECT
 
     bool initAudio(int SampleRate);
 
-    void debugErr(const QString& prefix, int err);
+    void debugErr(const QString &prefix, int err);
 
     bool runIsBreak();      //处理控制
 
@@ -81,6 +81,10 @@ public:
     void resume();
 
     void seek(int value);
+
+private slots:
+
+    void applyVolume(int volumeSliderValue);
 
 signals:
 

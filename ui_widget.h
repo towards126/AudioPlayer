@@ -17,6 +17,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,8 @@ class Ui_widget
 {
 public:
     QWidget *layoutWidget;
+    QVBoxLayout *verticalLayout_2;
+    QHBoxLayout *horizontalLayout_2;
     QGridLayout *gridLayout;
     QLabel *label_duration;
     QLineEdit *line_audioPath;
@@ -32,7 +35,9 @@ public:
     QLabel *label_10;
     QLabel *label;
     QSlider *slider;
-    QWidget *layoutWidget1;
+    QVBoxLayout *verticalLayout;
+    QLabel *label_2;
+    QSlider *slider_2;
     QHBoxLayout *horizontalLayout;
     QPushButton *btn_start;
     QPushButton *btn_stop;
@@ -46,10 +51,14 @@ public:
         widget->resize(400, 300);
         layoutWidget = new QWidget(widget);
         layoutWidget->setObjectName("layoutWidget");
-        layoutWidget->setGeometry(QRect(40, 40, 260, 134));
-        gridLayout = new QGridLayout(layoutWidget);
+        layoutWidget->setGeometry(QRect(40, 40, 332, 169));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget);
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(0, 0, 0, 0);
         label_duration = new QLabel(layoutWidget);
         label_duration->setObjectName("label_duration");
         label_duration->setMinimumSize(QSize(0, 40));
@@ -100,31 +109,59 @@ public:
 
         gridLayout->addWidget(slider, 1, 1, 1, 1);
 
-        layoutWidget1 = new QWidget(widget);
-        layoutWidget1->setObjectName("layoutWidget1");
-        layoutWidget1->setGeometry(QRect(60, 190, 320, 25));
-        horizontalLayout = new QHBoxLayout(layoutWidget1);
+
+        horizontalLayout_2->addLayout(gridLayout);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName("verticalLayout");
+        label_2 = new QLabel(layoutWidget);
+        label_2->setObjectName("label_2");
+        label_2->setMinimumSize(QSize(0, 40));
+        label_2->setFont(font);
+
+        verticalLayout->addWidget(label_2);
+
+        slider_2 = new QSlider(layoutWidget);
+        slider_2->setObjectName("slider_2");
+        slider_2->setMinimumSize(QSize(0, 40));
+        slider_2->setMinimum(0);
+        slider_2->setSingleStep(2);
+        slider_2->setPageStep(10);
+        slider_2->setValue(99);
+        slider_2->setOrientation(Qt::Orientation::Vertical);
+
+        verticalLayout->addWidget(slider_2, 0, Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignVCenter);
+
+
+        horizontalLayout_2->addLayout(verticalLayout);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_2);
+
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        btn_start = new QPushButton(layoutWidget1);
+        btn_start = new QPushButton(layoutWidget);
         btn_start->setObjectName("btn_start");
 
         horizontalLayout->addWidget(btn_start);
 
-        btn_stop = new QPushButton(layoutWidget1);
+        btn_stop = new QPushButton(layoutWidget);
         btn_stop->setObjectName("btn_stop");
 
         horizontalLayout->addWidget(btn_stop);
 
-        btn_pause = new QPushButton(layoutWidget1);
+        btn_pause = new QPushButton(layoutWidget);
         btn_pause->setObjectName("btn_pause");
 
         horizontalLayout->addWidget(btn_pause);
 
-        btn_resume = new QPushButton(layoutWidget1);
+        btn_resume = new QPushButton(layoutWidget);
         btn_resume->setObjectName("btn_resume");
 
         horizontalLayout->addWidget(btn_resume);
+
+
+        verticalLayout_2->addLayout(horizontalLayout);
 
 
         retranslateUi(widget);
@@ -139,6 +176,7 @@ public:
         label_11->setText(QCoreApplication::translate("widget", "\346\222\255\346\224\276\346\227\266\351\225\277:", nullptr));
         label_10->setText(QCoreApplication::translate("widget", "\346\222\255\346\224\276\350\277\233\345\272\246(\345\217\257\350\260\203):", nullptr));
         label->setText(QCoreApplication::translate("widget", "\351\237\263\351\242\221\350\267\257\345\276\204(\345\217\257\346\213\226\346\213\275):", nullptr));
+        label_2->setText(QCoreApplication::translate("widget", "\345\243\260\351\237\263\345\244\247\345\260\217", nullptr));
         btn_start->setText(QCoreApplication::translate("widget", "\345\220\257\345\212\250", nullptr));
         btn_stop->setText(QCoreApplication::translate("widget", "\345\201\234\346\255\242", nullptr));
         btn_pause->setText(QCoreApplication::translate("widget", "\346\232\202\345\201\234", nullptr));

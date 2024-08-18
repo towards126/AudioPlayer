@@ -19,7 +19,9 @@ public:
     explicit widget(QWidget *parent = nullptr);
 
     ~widget() override;
+
     void dragEnterEvent(QDragEnterEvent *event);
+
     void dropEvent(QDropEvent *event);
 
     PlayThread *thread;
@@ -29,6 +31,7 @@ public:
 private:
     Ui::widget *ui;
 private slots:
+
     void on_btn_start_clicked();
 
     void on_btn_stop_clicked();
@@ -45,6 +48,9 @@ private slots:
     void on_slider_sliderPressed();
 
     void on_slider_sliderReleased();
+
+signals:
+    void valueChanged(int value);
 
 };
 

@@ -13,8 +13,10 @@ widget::widget(QWidget *parent) :
     ui->setupUi(this);
     this->setAcceptDrops(true);
     thread = new PlayThread();
+
     connect(thread, SIGNAL(duration(int, int)), this, SLOT(onDuration(int, int)));
     connect(thread, SIGNAL(seekOk()), this, SLOT(onSeekOk()));
+    connect(ui->slider_2, SIGNAL(valueChanged(int)),thread, SLOT(applyVolume(int)));
     void duration(long currentMs, long destMs);        //播放时长
 
     thread->start();
@@ -36,7 +38,7 @@ void widget::onDuration(int currentMs, int destMs) {
     if (currentMs1 == currentMs && destMs1 == destMs) return;
     currentMs1 = currentMs;
     destMs1 = destMs;
-    qDebug() << "onDuration：" << currentMs << destMs << sliderSeeking;
+    //qDebug() << "onDuration：" << currentMs << destMs << sliderSeeking;
 
     int currentSec = currentMs1 / 1000;
     int destSec = destMs1 / 1000;
@@ -129,4 +131,6 @@ void widget::on_slider_sliderReleased()
     thread->seek(ui->slider->value());
 
 }
+
+
 

@@ -77,7 +77,7 @@ void PlayThread::debugErr(const QString &prefix, int err)  //根据错误编号�
 }
 
 void PlayThread::runPlay() {
-    qDebug()<<"runplay";
+    qDebug() << "runplay";
     if (audio == nullptr) {
         emit ERROR("输出设备不支持该格式，不能播放音频");
         return;
@@ -98,7 +98,7 @@ void PlayThread::runPlay() {
     auto *codec = avcodec_find_decoder(formatContext->streams[audioIndex]->codecpar->codec_id);
     auto *codecContext = avcodec_alloc_context3(codec);
     avcodec_parameters_to_context(codecContext, formatContext->streams[audioIndex]->codecpar);
-    codecContext->pkt_timebase=formatContext->streams[audioIndex]->time_base;
+    codecContext->pkt_timebase = formatContext->streams[audioIndex]->time_base;
     ret = avcodec_open2(codecContext, nullptr, nullptr);
     if (ret != 0) {
         debugErr("avcodec_open2", ret);
@@ -148,17 +148,18 @@ void PlayThread::runPlay() {
             }
             while (avcodec_receive_frame(codecContext, frame) == 0) {
                 if (runIsBreak()) break;
-                uint8_t *data= nullptr;
+                uint8_t *data = nullptr;
                 int byteCnt = frame->nb_samples * 2 * 2;
                 auto *pcm = new uint8_t[byteCnt];
                 data = pcm;
-                ret = swr_convert(swrctx, &pcm, frame->nb_samples*2, (const uint8_t **) frame->data, frame->nb_samples);
+                ret = swr_convert(swrctx, &pcm, frame->nb_samples * 2, (const uint8_t **) frame->data,
+                                  frame->nb_samples);
                 int out_size = av_samples_get_buffer_size(0,
                                                           out_ch_layout.nb_channels,
                                                           ret,
                                                           AV_SAMPLE_FMT_S16,
                                                           1);
-                int sleep_time=(codecContext->sample_rate*16/8)/out_size;
+                int sleep_time = (codecContext->sample_rate * 16 / 8) / out_size;
                 while (audio->bytesFree() < byteCnt) {
                     if (runIsBreak()) break;
                     msleep(sleep_time);
@@ -232,6 +233,15 @@ bool PlayThread::runIsBreak() {
             audio->stop();
     }
     return ret;
+}
+
+void PlayThread::applyVolume(int volumeSliderValue) {
+    //qDebug()<<"volume:"<<volumeSliderValue;
+    qreal linearVolume = QtAudio::convertVolume(volumeSliderValue / qreal(100.0),
+                                                QtAudio::LogarithmicVolumeScale,
+                                                QtAudio::LinearVolumeScale);
+
+    audio->setVolume(linearVolume);
 }
 
 
